@@ -4,6 +4,20 @@
     "description": "Update dependencies semver ranges to use caret",
     "bin": "src/cli.js",
     "main": "src/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/scinos/caretify.git"
+    },
+    "keywords": [
+        "caret",
+        "semver",
+        "package.json",
+        "yarn.lock"
+    ],
+    "bugs": {
+        "url": "https://github.com/scinos/caretify/issues"
+    },
+    "homepage": "https://github.com/scinos/caretify#readme",
     "license": "MIT",
     "packageManager": "yarn@3.2.0",
     "dependencies": {
