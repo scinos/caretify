@@ -16,14 +16,20 @@ const caretify = async ({ packageJson, yarnLock, indent }) => {
         )) {
             const fixedVersion = semver.minVersion(version);
             const newVersion = `^${fixedVersion.version}`;
-            parsedPackageJson[key][name] = newVersion;
-
             const originalName = `${name}@${version}`;
             const newName = `${name}@${newVersion}`;
 
-            if (!(newName in parsedYarnLock)) {
-                parsedYarnLock[newName] = parsedYarnLock[originalName];
+            if (
+                newName in parsedYarnLock &&
+                parsedYarnLock[newName].version !== fixedVersion.version
+            ) {
+                // The new version ^x.y.z already exists in yarn.lock, and it resolves to something
+                // different than x.y.z
+                continue;
             }
+
+            parsedPackageJson[key][name] = newVersion;
+            parsedYarnLock[newName] = parsedYarnLock[originalName];
         }
     }
 
