@@ -16,22 +16,26 @@ const caretify = async ({ packageJson, yarnLock, indent }) => {
         for (const [name, version] of Object.entries(
             parsedPackageJson[key] || []
         )) {
-            const fixedVersion = semver.minVersion(version);
-            const newVersion = `^${fixedVersion.version}`;
-            const originalName = `${name}@${version}`;
-            const newName = `${name}@${newVersion}`;
+            try {
+                const fixedVersion = semver.minVersion(version);
+                const newVersion = `^${fixedVersion.version}`;
+                const originalName = `${name}@${version}`;
+                const newName = `${name}@${newVersion}`;
 
-            if (
-                newName in parsedYarnLock &&
-                parsedYarnLock[newName].version !== fixedVersion.version
-            ) {
-                // The new version ^x.y.z already exists in yarn.lock, and it resolves to something
-                // different than x.y.z
-                continue;
+                if (
+                    newName in parsedYarnLock &&
+                    parsedYarnLock[newName].version !== fixedVersion.version
+                ) {
+                    // The new version ^x.y.z already exists in yarn.lock, and it resolves to something
+                    // different than x.y.z
+                    continue;
+                }
+
+                parsedPackageJson[key][name] = newVersion;
+                parsedYarnLock[newName] = parsedYarnLock[originalName];
+            } catch (e) {
+                console.log(`Couldn't process dependency ${name}@${version}`);
             }
-
-            parsedPackageJson[key][name] = newVersion;
-            parsedYarnLock[newName] = parsedYarnLock[originalName];
         }
     }
 
