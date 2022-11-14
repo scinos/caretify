@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Make it compatible with Node 12.
+- Log error if a version can't be updated, instead of just crashing.
+
 ## [1.0.2] - 2022-03-02
 
 ### Fixed
