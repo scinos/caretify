@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2022-11-14
+
 - Make it compatible with Node 12.
 - Log error if a version can't be updated, instead of just crashing.
 
@@ -25,3 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Initial release
+
+[unreleased]: https://github.com/scinos/caretify/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/scinos/caretify/compare/v1.0.1...v1.1.0
