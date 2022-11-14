@@ -1,13 +1,15 @@
 const semver = require("semver");
-const fs = require("fs/promises");
+const fs = require("fs");
+const { promisify } = require("util");
 const lockfile = require("@yarnpkg/lockfile");
 
+const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
+
 const caretify = async ({ packageJson, yarnLock, indent }) => {
-    const parsedPackageJson = JSON.parse(
-        await fs.readFile(packageJson, "utf8")
-    );
+    const parsedPackageJson = JSON.parse(await readFile(packageJson, "utf8"));
     const parsedYarnLock = lockfile.parse(
-        await fs.readFile(yarnLock, "utf8")
+        await readFile(yarnLock, "utf8")
     ).object;
 
     for (const key of ["dependencies", "devDependencies"]) {
@@ -33,12 +35,12 @@ const caretify = async ({ packageJson, yarnLock, indent }) => {
         }
     }
 
-    await fs.writeFile(
+    await writeFile(
         packageJson,
         JSON.stringify(parsedPackageJson, null, indent)
     );
 
-    await fs.writeFile(yarnLock, lockfile.stringify(parsedYarnLock));
+    await writeFile(yarnLock, lockfile.stringify(parsedYarnLock));
 };
 
 module.exports = {
